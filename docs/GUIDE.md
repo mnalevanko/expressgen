@@ -4,11 +4,11 @@
 
 ```bash
 # Method 1: Direct download
-curl -o /usr/local/bin/expressgen https://raw.githubusercontent.com/<your-username>/expressgen/main/bin/expressgen
+curl -o /usr/local/bin/expressgen https://raw.githubusercontent.com/mnalevanko/expressgen/main/bin/expressgen
 chmod +x /usr/local/bin/expressgen
 
 # Method 2: Clone repository
-git clone https://github.com/<your-username>/expressgen.git
+git clone https://github.com/mnalevanko/expressgen.git
 cd expressgen
 sudo ln -s $PWD/bin/expressgen /usr/local/bin/expressgen
 ```
