@@ -17,7 +17,7 @@
 
 ```bash
 # Install globally
-curl -o /usr/local/bin/expressgen https://raw.githubusercontent.com/<your-username>/expressgen/main/bin/expressgen
+curl -o /usr/local/bin/expressgen https://raw.githubusercontent.com/mnalevanko/expressgen/main/bin/expressgen
 chmod +x /usr/local/bin/expressgen
 
 # Create project
