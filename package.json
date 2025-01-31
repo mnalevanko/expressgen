@@ -1,0 +1,23 @@
+{
+  "name": "expressgen",
+  "version": "1.0.0",
+  "description": "CLI tool for Express.js + EJS boilerplate generation",
+  "bin": {
+    "expressgen": "./bin/expressgen"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "ejs",
+    "boilerplate",
+    "cli"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9"
+  }
+}

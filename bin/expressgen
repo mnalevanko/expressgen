@@ -1,0 +1,141 @@
+#!/bin/bash
+
+# Create project structure
+mkdir -p "$1"/{public/{css,js,images},views/partials}
+
+# Create index.js with proper content
+cat > "$1/index.js" <<'EOF'
+const express = require('express');
+const path = require('path');
+
+const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Home Page' });
+});
+
+app.use((req, res) => {
+  res.status(404).render('404', { title: 'Page Not Found' });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).render('error', { 
+    title: 'Server Error',
+    errorMessage: err.message 
+  });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+EOF
+
+# Create CSS with modern reset
+cat > "$1/public/css/styles.css" <<'EOF'
+/* Modern CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  line-height: 1.6;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  color: #333;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  margin-bottom: 0.75em;
+}
+
+.container {
+  width: min(100% - 2rem, 1200px);
+  margin-inline: auto;
+}
+
+h1 {
+  color: #2d3748;
+  text-align: center;
+  padding: 2rem 0;
+}
+EOF
+
+# Create empty JS file
+touch "$1/public/js/scripts.js"
+
+# Create EJS templates
+create_view() {
+  cat > "$1/views/$2" <<'EOF'
+$3
+EOF
+}
+
+create_view "$1" "index.ejs" "<!DOCTYPE html>
+<html lang=\"en\">
+<head>
+  <meta charset=\"UTF-8\">
+  <title><%= title %></title>
+  <link rel=\"stylesheet\" href=\"/css/styles.css\">
+</head>
+<body>
+  <h1>Welcome to <%= title %></h1>
+  <script src=\"/js/scripts.js\"></script>
+</body>
+</html>"
+
+create_view "$1" "404.ejs" "<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>404 - Page Not Found</h1>
+  <p>The requested page could not be found.</p>
+</body>
+</html>"
+
+create_view "$1" "error.ejs" "<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %></title>
+</head>
+<body>
+  <h1>500 - Server Error</h1>
+  <% if (errorMessage) { %>
+    <p><%= errorMessage %></p>
+  <% } %>
+</body>
+</html>"
+
+# Initialize npm and install dependencies
+(cd "$1" && npm init -y && npm install express ejs)
+
+echo "Express project $1 created successfully!"
+echo "To start:"
+echo "cd $1 && node index.js"
