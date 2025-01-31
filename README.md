@@ -39,4 +39,4 @@ cd my-app && npm start
 
 ## License
 
-MIT © [Your Name]
+MIT © Michal Nalevanko
